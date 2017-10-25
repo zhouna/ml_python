@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri May 26 00:27:00 2017
-
 @author: zz
 """
 import pandas as pd
@@ -21,8 +20,9 @@ class Node:
     def setChildren(self, children):
         self.children = children
     def p(self):
-        print 'label:', self.label, ', attribute:', self.attribute
+        print ('label:', self.label, ', attribute:', self.attribute)
 
+#计算熵(以2为底)
 def entropy(obj):
     # obj: pandas.Series
     N = float(obj.count())
@@ -34,19 +34,20 @@ def entropy(obj):
         H += -p*math.log(p,2)
     return H
 
+#计算条件熵
 def conditionEntropy(obj, attribute, clazz):
     """
     obj: Pandas.DataFrame
     attribute: string
     clazz: string
     """
-    CC = obj[attribute].value_counts()
-    index = CC.index
-    counts = CC.values
+    CC = obj[attribute].value_counts()   #属性的数量
+    index = CC.index                     
+    counts = CC.values                   #属性值
     N = float(obj.index.size)
  
     H = 0.0 # empirical entropy
-    HA = 0.0 # 训练数据集D关于特征A的值的熵
+    HA = 0.0 # 训练数据集D关于特征A的值的熵,经验条件熵
     for i in range(index.size):
         Hi = entropy(obj[obj[attribute] == index[i]][clazz])
         p = counts[i] / N
@@ -54,6 +55,7 @@ def conditionEntropy(obj, attribute, clazz):
         HA += -p * math.log(p, 2)
     return [H, HA]
 
+#决策树
 def decisionTree(obj, attributes, clazz, threshold, method='id3'):
     """
     obj: pandas.DataFrame
@@ -68,6 +70,7 @@ def decisionTree(obj, attributes, clazz, threshold, method='id3'):
     if clazz_value_counts.size == 1 or attributes.size == 0:
         return node
     
+    #判断条件熵的大小构建决策树
     condition_entropy = np.zeros(attributes.size)
     h = entropy(obj[clazz])
     for i in range(attributes.size):
