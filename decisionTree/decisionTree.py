@@ -120,9 +120,7 @@ return the tree's leaves's number
 def getLeavesNum(tree):
     if tree.children == None:
         return 1
-    
     num = 0
     for node in tree.children.values():
         num += getLeavesNum(node)
-
     return num
