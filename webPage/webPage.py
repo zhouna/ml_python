@@ -6,11 +6,11 @@ Created on Tue Jun 13 02:13:58 2017
 @author: zz
 """
 
+import math
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas import Series
-import numpy as np
-import math
 
 fig = plt.figure()
 ax = fig.add_subplot(211)
